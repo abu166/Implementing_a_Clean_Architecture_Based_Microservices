@@ -18,7 +18,7 @@ type Config struct {
 var AppConfig *Config
 
 func LoadConfig() {
-    err := godotenv.Load("../.env") // Adjust path to point to the root .env file
+    err := godotenv.Load("../.env") 
     if err != nil {
         log.Fatal("Error loading .env file")
     }
