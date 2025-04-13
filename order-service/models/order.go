@@ -5,12 +5,12 @@ import (
 )
 
 type Order struct {
-    ID         uint      `json:"id" gorm:"primaryKey"`
-    UserID     uint      `json:"user_id"`
-    Status     string    `json:"status"`
-    TotalPrice float64   `json:"total_price"`
-    CreatedAt  time.Time `json:"created_at"`
-    UpdatedAt  time.Time `json:"updated_at"`
+    ID         uint        `json:"id" gorm:"primaryKey"`
+    UserID     uint        `json:"user_id"`
+    Status     string      `json:"status"`
+    TotalPrice float64     `json:"total_price"`
+    CreatedAt  time.Time   `json:"created_at"`
+    UpdatedAt  time.Time   `json:"updated_at"`
     Items      []OrderItem `json:"items" gorm:"foreignKey:OrderID"`
 }
 
@@ -20,4 +20,15 @@ type OrderItem struct {
     Product  string  `json:"product"`
     Quantity int     `json:"quantity"`
     Price    float64 `json:"price"`
+}
+
+type Product struct {
+    ID          uint      `json:"id" gorm:"primaryKey"`
+    Name        string    `json:"name"`
+    Category    string    `json:"category"`
+    Price       float64   `json:"price"`
+    Stock       int       `json:"stock"`
+    Description string    `json:"description"`
+    CreatedAt   time.Time `json:"created_at"`
+    UpdatedAt   time.Time `json:"updated_at"`
 }

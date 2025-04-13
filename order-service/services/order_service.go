@@ -1,33 +1,26 @@
 package services
 
 import (
-    "errors"
     "Implementing_a_Clean_Architecture_Based_Microservices/order-service/models"
     "Implementing_a_Clean_Architecture_Based_Microservices/order-service/repositories"
 )
 
-func CreateOrder(order *models.Order) error {
-    return repositories.CreateOrder(order)
+func CreateProduct(product *models.Product) error {
+    return repositories.CreateProduct(product)
 }
 
-func GetOrderByID(id string) (*models.Order, error) {
-    return repositories.GetOrderByID(id)
+func GetProduct(id int32) (*models.Product, error) {
+    return repositories.GetProductByID(id)
 }
 
-func UpdateOrderStatus(id string, status string) error {
-    validStatuses := map[string]bool{
-        "pending":   true,
-        "completed": true,
-        "cancelled": true,
-    }
-
-    if !validStatuses[status] {
-        return errors.New("Invalid order status")
-    }
-
-    return repositories.UpdateOrderStatus(id, status)
+func UpdateProduct(product *models.Product) error {
+    return repositories.UpdateProduct(product)
 }
 
-func ListOrders() ([]models.Order, error) {
-    return repositories.ListOrders()
+func DeleteProduct(id int32) error {
+    return repositories.DeleteProduct(id)
+}
+
+func ListProducts(category string, page, limit int32) ([]models.Product, error) {
+    return repositories.ListProducts(category, page, limit)
 }

@@ -7,25 +7,37 @@ import (
     "Implementing_a_Clean_Architecture_Based_Microservices/order-service/models"
 )
 
-func CreateOrder(order *models.Order) error {
-    return database.DB.Create(order).Error
+func CreateProduct(product *models.Product) error {
+    return database.DB.Create(product).Error
 }
 
-func GetOrderByID(id string) (*models.Order, error) {
-    order := &models.Order{}
-    err := database.DB.Preload("Items").First(order, id).Error
+func GetProductByID(id int32) (*models.Product, error) {
+    product := &models.Product{}
+    err := database.DB.First(product, id).Error
     if errors.Is(err, gorm.ErrRecordNotFound) {
-        return nil, errors.New("Order not found")
+        return nil, errors.New("Product not found")
     }
-    return order, err
+    return product, err
 }
 
-func UpdateOrderStatus(id string, status string) error {
-    return database.DB.Model(&models.Order{}).Where("id = ?", id).Update("status", status).Error
+func UpdateProduct(product *models.Product) error {
+    return database.DB.Save(product).Error
 }
 
-func ListOrders() ([]models.Order, error) {
-    var orders []models.Order
-    err := database.DB.Preload("Items").Find(&orders).Error
-    return orders, err
+func DeleteProduct(id int32) error {
+    return database.DB.Delete(&models.Product{}, id).Error
+}
+
+func ListProducts(category string, page, limit int32) ([]models.Product, error) {
+    var products []models.Product
+    query := database.DB
+    if category != "" {
+        query = query.Where("category = ?", category)
+    }
+    if page > 0 && limit > 0 {
+        offset := (page - 1) * limit
+        query = query.Offset(int(offset)).Limit(int(limit))
+    }
+    err := query.Find(&products).Error
+    return products, err
 }
